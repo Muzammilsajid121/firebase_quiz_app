@@ -1,4 +1,5 @@
 import 'package:firebase_quiz_app/View/home_screen.dart';
+import 'package:firebase_quiz_app/View/question.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const QuizQuestion(),
     );
   }
 }
