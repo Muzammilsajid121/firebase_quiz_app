@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_quiz_app/Admin/add_quiz.dart';
 import 'package:firebase_quiz_app/Admin/admin_login.dart';
 import 'package:firebase_quiz_app/View/home_screen.dart';
 import 'package:firebase_quiz_app/View/question.dart';
@@ -45,10 +46,10 @@ class MyApp extends StatelessWidget {
             titleMedium: GoogleFonts.poppins(fontSize: 26, color: Colors.black , fontWeight: FontWeight.bold),
         ),
       
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      home: const AdminLogin(),
+      home: const AdminAddQuiz(),
     );
   }
 }
