@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
+
 
 class AdminAddQuiz extends StatefulWidget {
   const AdminAddQuiz({super.key});
@@ -15,10 +21,38 @@ class _AdminAddQuizState extends State<AdminAddQuiz> {
   TextEditingController option4controller = new TextEditingController();
   TextEditingController correctAnswerController = new TextEditingController();
 
+  //UPLOAD QUIZ FUNCTION
+  uploadQuiz() async{
+    if(selectedImage!=null && option1controller.text!= '' 
+    && option2controller.text!='' && option3controller.text!='' && option4controller.text!='');
+
+    //We need to assign random id using random string pkg
+    String addId = randomAlphaNumeric(10);
+    //Store the file in firebase
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('blogImages').child(addId);
+    //upload the image 
+    final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+    //help us to get the url of the image that we will upload to firebase
+    var downloadUrl = await (await task).ref.getDownloadURL();
+
+  }
+
   //LIST OPTIONS DROPDOWN
   String? value;
   final List<String> dropdownQuizOptions = ['Animal', 'Sports', 'Fruits', 'Objects', 'Random', 'Place'];
 
+ //IMAGE PICKER
+ final ImagePicker picker = ImagePicker();
+ File? selectedImage;
+
+ Future getImage()async{
+ var image = await picker.pickImage(source: ImageSource.gallery);
+
+selectedImage = File(image!.path);
+setState(() {
+  
+});
+ }
 
   //
 
@@ -29,27 +63,52 @@ class _AdminAddQuizState extends State<AdminAddQuiz> {
         title: Text("Add Quiz",style: Theme.of(context).textTheme.bodyLarge,),
         centerTitle: true,
       ),
-      body: Center(
+
+     body: Center(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 //Gallery Option
-                Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 120,width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      
-                      border: Border.all(),
+                //IF USER PICKS IMAGE
+              selectedImage ==null?
+
+                InkWell(
+                  onTap: () {
+                    getImage();
+                  },
+                  child: Material(
+                    elevation: 10,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 120,width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        
+                        border: Border.all(),
+                      ),
+                      child: Icon(Icons.camera),
                     ),
-                    child: Icon(Icons.camera),
                   ),
-                ),
+                ):
+                //IF IMAGE GET PICKS
+                 Material(
+                    elevation: 10,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 120,width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        
+                        border: Border.all(),
+                      ),
+                      child: Image.file(
+                        selectedImage!, fit: BoxFit.fill,)
+                    ),
+                  ),
 
        const SizedBox(height: 20,),
               //FROM ReusableQuizOptionAmin  
