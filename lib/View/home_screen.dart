@@ -55,8 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
 
-//                     Center(child: Image.asset('images/quiz.png',height: 80,)),
-// Center(child: Text("Play Quiz By Guessing the image", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),)),     
                  ],
                 ),
               ),

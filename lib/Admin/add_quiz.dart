@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_quiz_app/service/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,6 +36,23 @@ class _AdminAddQuizState extends State<AdminAddQuiz> {
     //help us to get the url of the image that we will upload to firebase
     var downloadUrl = await (await task).ref.getDownloadURL();
 
+    //so there are many categories so using map dynamic we dont have to do it for every categ.
+    //auto uploads the quiz from the each categ from Admin pannel
+    Map<String, dynamic> addQuiz={
+      "Image":    downloadUrl,
+      "option1":  option1controller.text,
+      "option2":  option2controller.text,
+      "option3":  option3controller.text,
+      "option4":  option4controller.text,
+      "correct":  correctAnswerController.text,
+    };
+  
+  await DataBaseMethods().addQuizCategory(addQuiz, value!).then((value) =>
+   ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(backgroundColor: Colors.orange,
+      content: Text("Quiz has been added Successfully",
+      style: Theme.of(context).textTheme.bodyMedium,))));
+
   }
 
   //LIST OPTIONS DROPDOWN
@@ -54,7 +72,6 @@ setState(() {
 });
  }
 
-  //
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +122,11 @@ setState(() {
                         
                         border: Border.all(),
                       ),
-                      child: Image.file(
-                        selectedImage!, fit: BoxFit.fill,)
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          selectedImage!, fit: BoxFit.fill,),
+                      )
                     ),
                   ),
 
@@ -167,7 +187,22 @@ setState(() {
 
           ),
      ), )  ,
-//DROPDOWN END         
+//DROPDOWN END     
+const SizedBox(height: 20,),
+
+        //Add quiz BUTTON
+              SizedBox(width: double.infinity,height: 45,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                  onPressed: (){
+                    uploadQuiz();
+                  },
+  child: Text("ADD QUIZ", style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),)),
+              ),
+
+  const SizedBox(height: 20,),
+
+
             
               ],
             ),
