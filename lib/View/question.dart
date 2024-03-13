@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_quiz_app/Utils/reusable_quiz_answer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,28 @@ class QuizQuestion extends StatefulWidget {
 }
 
 class _QuizQuestionState extends State<QuizQuestion> {
+  
+  //Stream builderr help us to get all the data in one flow
+  //when getting data from firestore use stream builder
+  Stream? QuizStream;
+  PageController controller = PageController();
+
+  Widget allQuiz(){
+    return StreamBuilder(
+      stream: QuizStream,
+       builder: (context, AsyncSnapshot snapshot){
+         return snapshot.hasData? PageView.builder(
+          controller: controller,
+          itemCount: snapshot.data.docs.length,
+          itemBuilder: (context, index){
+            DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+
+          }
+         )
+       });
+  }
+
+
   @override
   Widget build(BuildContext context) {
 final height = MediaQuery.sizeOf(context).height *1;
